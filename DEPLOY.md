@@ -39,6 +39,61 @@ python -m http.server 5173 --bind 0.0.0.0
 
 优点：免费、自动 HTTPS、全球 CDN、无需安装任何工具。
 
+## 方案 B-2：把 Netlify 站点连到 GitHub（以后不用重复拖文件）
+
+适合已经有一个 Netlify 站点、又不想每次手动上传的情况。全程可以在网页完成，不需要装 git。
+
+### 1. 建空仓库
+
+1. 打开 <https://github.com/new>，Repository name 填 `word-flash`。
+2. Visibility 选 **Public**，私有仓库连 Netlify 还要额外授权，公开最省事。
+3. **不要**勾 Add a README，保持空仓库，否则上传文件时会冲突。
+
+### 2. 上传代码
+
+1. 空仓库页面点 **uploading an existing file**。
+2. 把 `word-flash` 里的内容拖进去：`index.html`、`assets/`、`data/`、`supabase/`、`README.md`、`DEPLOY.md`、`CLOUD.md`、`Dockerfile`、`nginx.conf`、`start-server.bat`。
+3. 直接提交到 `main` 分支。
+
+注意：拖**文件夹**会变成 `word-flash/index.html`，拖**文件夹里的内容**才是仓库根目录。两种都行，但要和第 3 步的 Publish directory 对上。
+
+### 3. Netlify 关联仓库
+
+1. <https://app.netlify.com> → 进入项目 → **Project configuration → Continuous deployment**。
+2. **Connect to Git provider** → GitHub → 授权 → 选 `word-flash` → Install。
+3. **Build command 留空**（纯前端零构建，填了反而容易报错），**Publish directory** 填 `.`（文件在仓库根）或 `word-flash`（整个文件夹在仓库里）。
+4. Save 会立刻触发一次部署，之后每次 push 自动上线。
+
+### 4. 额度提醒
+
+Netlify 的 credit 计划按部署次数扣费：
+
+| 动作 | 消耗 |
+| --- | --- |
+| 推 `main` / 合并 PR（生产部署） | 15 credits |
+| Deploy Preview、分支部署 | 0 credits |
+| 失败的部署、回滚到旧版本 | 0 credits |
+
+所以正确用法是：改动推到一个新分支开 PR，在预览域名上验收，确认没问题再合并。一次改动只花 15 credits，而不是反复上传反复扣。
+
+连上 Git 之后，原来的拖拽上传会被 Git 部署覆盖；想回到手动上传，在 Continuous deployment 里 Disconnect。
+
+### 5. 想用命令行（可选）
+
+需要先装 git：`winget install Git.Git`，装完重开终端。
+
+```bash
+cd word-flash
+git init
+git add .
+git commit -m "init flashvocab"
+git branch -M main
+git remote add origin https://github.com/<用户名>/word-flash.git
+git push -u origin main
+```
+
+第一次 push 会弹浏览器让你登录 GitHub 授权。
+
 ## 方案 C：Cloudflare Pages
 
 ```bash
