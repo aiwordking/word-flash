@@ -1,0 +1,16 @@
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# 打包产物与临时文件
+*.zip
+*.log
+node_modules/
+.cowork-temp/
+
+# 本地配置：如果要公开部署，别把真实 key 提交进仓库
+# assets/cloud-config.js 里的 anon key 本身是公开的，可以提交
+# 但绝不要提交 service_role / secret key
