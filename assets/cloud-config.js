@@ -18,6 +18,6 @@
    那等于把整库的钥匙发到浏览器里。
    ============================================================ */
 window.FLASHVOCAB_CLOUD = {
-  url: "",       // 例如 https://abcdefgh.supabase.co
-  anonKey: "",   // 例如 eyJhbGciOi... 或 sb_publishable_...
+  url: "https://dftimmfomyljrvjqtrnc.supabase.co",       // 例如 https://abcdefgh.supabase.co
+  anonKey: "sb_publishable_KHyvc2aqsMrJbkiYoJcgNw_QCWxjstu",   // 例如 eyJhbGciOi... 或 sb_publishable_...
 };
